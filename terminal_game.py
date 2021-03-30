@@ -1,3 +1,4 @@
+from random import randint
 #creazione classe entity
 class Entity:
     def __init__(self, x, y):
@@ -15,6 +16,11 @@ class Entity:
         elif direction == "a" and self.x > 0:
             self.x -= 1
 
+#creazione classe snake
+class Snake(Entity):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
 #creazione classe Field
 class Field:
     def __init__(self, h, w):
@@ -27,9 +33,14 @@ class Field:
         for y in range(self.h):
             for x in range(self.w):
                 for e in self.entities:
-                    if y == e.y and x == e.x:
-                        print('[X]', end = '')
-                        break
+                    if e == snake:
+                        if y == e.y and x == e.x:
+                            print("[-]", end="")
+                            break
+                    else:
+                        if y == e.y and x == e.x:
+                            print('[X]', end = '')
+                            break
 
                 else:
                     print('[ ]', end = '')
@@ -40,8 +51,8 @@ h_field = int(input("inserire l'altezza del campo"))
 w_field = int(input("inserire la larghezza del campo"))
 field = Field(h_field, w_field)
 
-entity = Entity(2,3)
-field.entities.append(entity)
+snake = Snake(randint(0, w_field), randint(0, h_field))
+field.entities.append(snake)
 
 #ciclo di gioco
 while True:
@@ -49,19 +60,19 @@ while True:
     move = input("inserire un comando di movimento ").lower()
 
     #controllo bordi field
-    if move == "w" and entity.y == 0:
+    if move == "w" and snake.y == 0:
         print ("sei morto")
         quit()
-    elif move == "s" and entity.y == field.h - 1:
+    elif move == "s" and snake.y == field.h - 1:
         print("sei morto")
         quit()
-    elif move == "d" and entity.x == field.w - 1:
+    elif move == "d" and snake.x == field.w - 1:
         print("sei morto")
         quit()
-    elif move == "a" and entity.x == 0:
+    elif move == "a" and snake.x == 0:
         print("sei morto")
         quit()
     if move == "stop":
         quit()
         
-    entity.move(move) 
+    snake.move(move) 
