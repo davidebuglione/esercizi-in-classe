@@ -47,6 +47,21 @@ field.entities.append(entity)
 while True:
     field.draw_field()
     move = input("inserire un comando di movimento ").lower()
+
+    #controllo bordi field
+    if move == "w" and entity.y == 0:
+        print ("sei morto")
+        quit()
+    elif move == "s" and entity.y == field.h - 1:
+        print("sei morto")
+        quit()
+    elif move == "d" and entity.x == field.w - 1:
+        print("sei morto")
+        quit()
+    elif move == "a" and entity.x == 0:
+        print("sei morto")
+        quit()
     if move == "stop":
         quit()
-    entity.move(move)
+        
+    entity.move(move) 
