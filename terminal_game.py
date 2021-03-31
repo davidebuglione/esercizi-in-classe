@@ -66,7 +66,7 @@ h_field = int(input("inserire l'altezza del campo"))
 w_field = int(input("inserire la larghezza del campo"))
 field = Field(h_field, w_field)
 
-snake = Snake(randint(0, w_field), randint(0, h_field))
+snake = Snake(0,0)
 field.entities.append(snake)
 
 clear_screen()
@@ -82,37 +82,37 @@ while True:
         if snake.y == 0:
             print("sei morto")
             quit()
-        clear_screen()
         draw = "si"
         snake.move("w")
         while keyboard.is_pressed("w"):
             continue
+        clear_screen()
     elif keyboard.is_pressed("s"):
         if snake.y == field.h - 1:
             print("sei morto")
             quit()
-        clear_screen()
         draw = "si"
         snake.move("s")
         while keyboard.is_pressed("s"):
             continue
+        clear_screen()
     elif keyboard.is_pressed("d"):
         if snake.x == field.w - 1:
             print("sei morto")
             quit()
-        clear_screen()
         draw = "si"
         snake.move("d")
         while keyboard.is_pressed("d"):
             continue
+        clear_screen()
     elif keyboard.is_pressed("a"):
         if snake.x == 0:
             print("sei morto")
             quit()
-        clear_screen()
         draw = "si"
         snake.move("a")
         while keyboard.is_pressed("a"):
             continue
+        clear_screen()
     elif keyboard.is_pressed("0"):
         quit()
