@@ -1,3 +1,4 @@
+import keyboard
 import os
 from random import randint
 #creazione classe entity
@@ -71,25 +72,47 @@ field.entities.append(snake)
 clear_screen()
 
 #ciclo di gioco
+draw = "si"
 while True:
-    field.draw_field()
-    move = input("inserire un comando di movimento ").lower()
-    clear_screen()
+    if draw == "si":
+        field.draw_field()
+    draw = "no"
 
-    #controllo bordi field
-    if move == "w" and snake.y == 0:
-        print ("sei morto")
+    if keyboard.is_pressed("w"):
+        if snake.y == 0:
+            print("sei morto")
+            quit()
+        clear_screen()
+        draw = "si"
+        snake.move("w")
+        while keyboard.is_pressed("w"):
+            continue
+    elif keyboard.is_pressed("s"):
+        if snake.y == field.h - 1:
+            print("sei morto")
+            quit()
+        clear_screen()
+        draw = "si"
+        snake.move("s")
+        while keyboard.is_pressed("s"):
+            continue
+    elif keyboard.is_pressed("d"):
+        if snake.x == field.w - 1:
+            print("sei morto")
+            quit()
+        clear_screen()
+        draw = "si"
+        snake.move("d")
+        while keyboard.is_pressed("d"):
+            continue
+    elif keyboard.is_pressed("a"):
+        if snake.x == 0:
+            print("sei morto")
+            quit()
+        clear_screen()
+        draw = "si"
+        snake.move("a")
+        while keyboard.is_pressed("a"):
+            continue
+    elif keyboard.is_pressed("0"):
         quit()
-    elif move == "s" and snake.y == field.h - 1:
-        print("sei morto")
-        quit()
-    elif move == "d" and snake.x == field.w - 1:
-        print("sei morto")
-        quit()
-    elif move == "a" and snake.x == 0:
-        print("sei morto")
-        quit()
-    if move == "stop":
-        quit()
-    
-    snake.move(move) 
