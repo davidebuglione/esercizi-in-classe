@@ -10,18 +10,35 @@ class Entity:
 
     #funzione per muovere un'entità
     def move(self, direction):
+        futureX = self.x
+        futureY = self.y
         if direction == "w"  and self.y > 0:
-            self.y -= 1
+            futureY -= 1
+            #self.y -= 1
             self.snake_drawing = "[|]"
         elif direction == "s" and self.y < field.h - 1:
-            self.y += 1
+            futureY += 1
+            #self.y += 1
             self.snake_drawing = "[|]"
         elif direction == "d" and self.x < field.w - 1:
-            self.x +=1
+            futureX += 1
+            #self.x +=1
             self.snake_drawing = "[-]"
         elif direction == "a" and self.x > 0:
-            self.x -= 1
+            futureX -= 1
+            #self.x -= 1
             self.snake_drawing = "[-]"
+
+        e = field.get_entity_at_coords(futureX, futureY)
+
+        if e == None:
+            self.x = futureX
+            self.y = futureY
+        else:
+            self.collide(e)
+        
+    def collide(self, entity):
+        pass
 
 #creazione classe snake
 class Snake(Entity):
@@ -34,6 +51,13 @@ class Field:
         self.h = h
         self.w = w
         self.entities = []
+
+#funzione check coordinate future
+    def get_entity_at_coords(self, x, y):
+        for e in self.entities:
+            if e.x == x and e.y == y:
+                return e
+        return None
 
     #funzione per disegnare il campo di gioco
     def draw_field(self):
@@ -67,7 +91,9 @@ w_field = int(input("inserire la larghezza del campo"))
 field = Field(h_field, w_field)
 
 snake = Snake(0,0)
+point = Entity(randint(0,w_field), randint(0, h_field))
 field.entities.append(snake)
+field.entities.append(point)
 
 clear_screen()
 
@@ -78,6 +104,7 @@ while True:
         field.draw_field()
     draw = "no"
 
+    #controllo input da tastiera + controllo bordi
     if keyboard.is_pressed("w"):
         if snake.y == 0:
             print("sei morto")
