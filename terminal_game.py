@@ -37,8 +37,11 @@ class Entity:
             self.y = futureY
 
     def collide(self, entity):
-        field.entities.remove(entity)
-        return True
+        entity.assign_coords(entity, randint(0,w_field-1), randint(0,h_field-1))
+    
+    def assign_coords(self, entity, x, y):
+        entity.x = x
+        entity.y = y
 
 #creazione classe snake
 class Snake(Entity):
@@ -91,7 +94,7 @@ w_field = int(input("inserire la larghezza del campo"))
 field = Field(h_field, w_field)
 
 snake = Snake(0,0)
-point = Entity(randint(0,w_field), randint(0, h_field))
+point = Entity(randint(0,w_field-1), randint(0, h_field-1))
 field.entities.append(snake)
 field.entities.append(point)
 
