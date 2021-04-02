@@ -1,6 +1,7 @@
 import keyboard
 import os
 from random import randint
+
 #creazione classe entity
 class Entity:
     def __init__(self, x, y):
@@ -14,19 +15,15 @@ class Entity:
         futureY = self.y
         if direction == "w"  and self.y > 0:
             futureY -= 1
-            #self.y -= 1
             self.snake_drawing = "[|]"
         elif direction == "s" and self.y < field.h - 1:
             futureY += 1
-            #self.y += 1
             self.snake_drawing = "[|]"
         elif direction == "d" and self.x < field.w - 1:
             futureX += 1
-            #self.x +=1
             self.snake_drawing = "[-]"
         elif direction == "a" and self.x > 0:
             futureX -= 1
-            #self.x -= 1
             self.snake_drawing = "[-]"
 
         e = field.get_entity_at_coords(futureX, futureY)
@@ -35,10 +32,13 @@ class Entity:
             self.x = futureX
             self.y = futureY
         else:
-            self.collide(e)
-        
+            self.collide(point)
+            self.x = futureX
+            self.y = futureY
+
     def collide(self, entity):
-        pass
+        field.entities.remove(entity)
+        return True
 
 #creazione classe snake
 class Snake(Entity):
