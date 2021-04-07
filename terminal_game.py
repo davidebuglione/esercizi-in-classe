@@ -2,6 +2,7 @@ import keyboard
 import os
 from random import randint
 import time
+from threading import Thread
 
 #creazione classe entity
 class Entity:
@@ -14,16 +15,16 @@ class Entity:
     def move(self, direction):
         futureX = self.x
         futureY = self.y
-        if direction == "w" and self.y > 0:
+        if direction == "w":
             futureY -= 1
             self.snake_drawing = "[|]"
-        elif direction == "s" and self.y < field.h - 1:
+        elif direction == "s":
             futureY += 1
             self.snake_drawing = "[|]"
-        elif direction == "d" and self.x < field.w - 1:
+        elif direction == "d":
             futureX += 1
             self.snake_drawing = "[-]"
-        elif direction == "a" and self.x > 0:
+        elif direction == "a":
             futureX -= 1
             self.snake_drawing = "[-]"
 
@@ -89,6 +90,33 @@ def clear_screen():
     else:
         os.system("clear")
 
+#auto_move = "right"
+class Motion_thread(Thread):
+    def __init__(self):
+        Thread.__init__(self)
+        self.auto_move = "right"
+    def run(self):
+        while True:
+            if keyboard.is_pressed("w"):
+                self.auto_move = "up"
+                while keyboard.is_pressed("w"):
+                    continue
+            elif keyboard.is_pressed("s"):
+                self.auto_move = "down"
+                while keyboard.is_pressed("s"):
+                    continue
+            elif keyboard.is_pressed("d"):
+                self.auto_move = "right"
+                while keyboard.is_pressed("d"):
+                    continue
+            elif keyboard.is_pressed("a"):
+                self.auto_move = "left"
+                while keyboard.is_pressed("a"):
+                    continue
+            
+            if keyboard.is_pressed("0"):
+                quit()        
+
 #intro
 clear_screen()
 print("Today,", time.ctime(), ",you are going to accept a very difficult challenge, are you ready?")
@@ -105,51 +133,46 @@ point = Entity(randint(0,w_field-1), randint(0, h_field-1))
 field.entities.append(snake)
 field.entities.append(point)
 
+motion_thread = Motion_thread()
+
 clear_screen()
 
+motion_thread.start()
 #ciclo di gioco
-draw = "si"
 while True:
-    if draw == "si":
-        field.draw_field()
-    draw = "no"
+    field.draw_field()
 
-    #controllo input da tastiera + controllo bordi
-    if keyboard.is_pressed("w"):
-        if snake.y == 0:
-            print("sei morto")
-            quit()
-        draw = "si"
+    if motion_thread.auto_move == "right":
+        snake.move("d")
+    elif motion_thread.auto_move == "left":
+        snake.move("a")
+    elif motion_thread.auto_move == "up":
         snake.move("w")
+    elif motion_thread.auto_move == "down":
+        snake.move("s")
+    '''
+    if keyboard.is_pressed("w"):
+        auto_move = "up"
         while keyboard.is_pressed("w"):
             continue
-        clear_screen()
     elif keyboard.is_pressed("s"):
-        if snake.y == field.h - 1:
-            print("sei morto")
-            quit()
-        draw = "si"
-        snake.move("s")
+        auto_move = "down"
         while keyboard.is_pressed("s"):
             continue
-        clear_screen()
     elif keyboard.is_pressed("d"):
-        if snake.x == field.w - 1:
-            print("sei morto")
-            quit()
-        draw = "si"
-        snake.move("d")
+        auto_move = "right"
         while keyboard.is_pressed("d"):
             continue
-        clear_screen()
     elif keyboard.is_pressed("a"):
-        if snake.x == 0:
-            print("sei morto")
-            quit()
-        draw = "si"
-        snake.move("a")
+        auto_move = "left"
         while keyboard.is_pressed("a"):
             continue
-        clear_screen()
-    elif keyboard.is_pressed("0"):
+    
+    if keyboard.is_pressed("0"):
         quit()
+    '''
+    if snake.y == -1 or snake.y == field.h or snake.x == field.w or snake.x == -1:
+        print("sei morto")
+        quit()
+    time.sleep(0.5)
+    clear_screen()
