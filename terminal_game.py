@@ -1,6 +1,7 @@
 import keyboard
 import os
 from random import randint
+import time
 
 #creazione classe entity
 class Entity:
@@ -13,7 +14,7 @@ class Entity:
     def move(self, direction):
         futureX = self.x
         futureY = self.y
-        if direction == "w"  and self.y > 0:
+        if direction == "w" and self.y > 0:
             futureY -= 1
             self.snake_drawing = "[|]"
         elif direction == "s" and self.y < field.h - 1:
@@ -38,7 +39,7 @@ class Entity:
 
     def collide(self, entity):
         entity.assign_coords(entity, randint(0,w_field-1), randint(0,h_field-1))
-    
+
     def assign_coords(self, entity, x, y):
         entity.x = x
         entity.y = y
@@ -88,8 +89,14 @@ def clear_screen():
     else:
         os.system("clear")
 
+#intro
+clear_screen()
+print("Today,", time.ctime(), ",you are going to accept a very difficult challenge, are you ready?")
+input()
+
 #richiesta misure campo all'utente e creazione classi
 h_field = int(input("inserire l'altezza del campo"))
+print()
 w_field = int(input("inserire la larghezza del campo"))
 field = Field(h_field, w_field)
 
